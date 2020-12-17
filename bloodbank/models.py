@@ -28,6 +28,8 @@ class Donor(models.Model):
         self.email = email
         self.save_donor()
 
+    def delete_donor(self):
+        self.delete()
 
 class Stock(models.Model):
     donor_name = models.ForeignKey(Donor, on_delete=models.CASCADE,null= True)

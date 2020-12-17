@@ -51,7 +51,9 @@ class DonorTestClass(TestCase):
         self.donor.save_donor()
         self.donor.delete_donor()
         donors = Donor.objects.all()
-        self.assertTrue(len(profiles) == 0)
+        self.assertTrue(len(donors) == 0)
+
+    
 
 
 
