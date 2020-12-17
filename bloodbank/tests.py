@@ -87,11 +87,23 @@ class Blood_stockTestClass(TestCase):
 
     def test_stock_update(self):
         """
-        TestCase to check if profile email is updated
+        TestCase to check if bloodstock volume is updated
         """
         self.stock.save_bloodstock()
         self.stock.blood_volume_update('10.00')
         self.assertEqual(self.stock.blood_volume, '10.00')
+
+    def test_delete_stock(self):
+        """
+        TestCase to check if method deletes a stock instance
+        """
+        self.stock.save_bloodstock()
+        self.stock.delete_stock()
+        stocks = Blood_stock.objects.all()
+        self.assertTrue(len(stocks) == 0)
+
+
+
 
 
 

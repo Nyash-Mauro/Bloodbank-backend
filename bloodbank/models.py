@@ -49,6 +49,9 @@ class Blood_stock(models.Model):
         self.blood_volume = blood_volume
         self.save_bloodstock()
 
+    def delete_stock(self):
+        self.delete()
+
 
 
 
