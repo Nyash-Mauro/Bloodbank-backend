@@ -42,6 +42,10 @@ class Blood_stock(models.Model):
     def __str__(self):
         return self.blood_type
 
+    def save_bloodstock(self):
+        self.save()
+
+
 
 
 

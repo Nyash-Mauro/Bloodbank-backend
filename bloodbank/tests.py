@@ -71,10 +71,18 @@ class Blood_stockTestClass(TestCase):
 
     def test_instance(self):
         """
-        Testing instance to see if self.profile is instance of class Profile.
+        Testing instance to see if self.stock is instance of class Blood_stock.
         """
 
         self.assertIsInstance(self.stock, Blood_stock)
+
+    def test_save_profile(self):
+        '''
+        Testing the Save Method on Profile class
+        '''
+        self.stock.save_bloodstock()
+        stocks = Blood_stock.objects.all()
+        self.assertTrue(len(stocks) > 0)
 
 
     
