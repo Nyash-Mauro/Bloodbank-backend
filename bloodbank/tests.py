@@ -6,6 +6,7 @@ from .models import Donor,Stock
 class DonorTestClass(TestCase):
     '''
     Set Up method that creates instance of Donor Class
+    Runs before each test
     '''
     
     def setUp(self):
@@ -15,13 +16,28 @@ class DonorTestClass(TestCase):
                                         phone_number='0721123456',location='Nairobi',weight='45',
                                         date_registered='10-12-2020')
     def tearDown(self):
+        '''
+        this tearDown method runs after every test.
+        '''
         pass
 
     def test_instance(self):
         """
-        Test if instance of Donor
+        Testing instance to see if self.donor is instance of class Donor.
         """
+
         self.assertIsInstance(self.donor, Donor)
+
+    def test_save_donor(self):
+        '''
+        Testing the Save Method on Donor class
+        '''
+        self.donor.save_donor()
+        donors = Donor.objects.all()
+        self.assertTrue(len(profiles) > 0)
+
+
+
 
 
     
