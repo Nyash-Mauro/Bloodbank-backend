@@ -7,6 +7,7 @@ class Donor(models.Model):
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    email=models.CharField(max_length=40,primary_key=True)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=15)
     date_of_birth = models.DateField()
@@ -22,6 +23,9 @@ class Stock(models.Model):
     blood_type = models.CharField(max_length=3)
     hospital_name = models.CharField(max_length=50)
     blood_volume = models.FloatField()
+
+    def __str__(self):
+        return self.blood_type
 
 
 
