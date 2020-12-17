@@ -40,7 +40,7 @@ class Blood_stock(models.Model):
     blood_volume = models.FloatField()
 
     def __str__(self):
-        return self.blood_type
+        return self.hospital_name
 
     def save_bloodstock(self):
         self.save()
