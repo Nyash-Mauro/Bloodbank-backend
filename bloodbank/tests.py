@@ -76,13 +76,23 @@ class Blood_stockTestClass(TestCase):
 
         self.assertIsInstance(self.stock, Blood_stock)
 
-    def test_save_profile(self):
+    def test_save_blood_stock(self):
         '''
         Testing the Save Method on Profile class
         '''
         self.stock.save_bloodstock()
         stocks = Blood_stock.objects.all()
         self.assertTrue(len(stocks) > 0)
+
+
+    def test_stock_update(self):
+        """
+        TestCase to check if profile email is updated
+        """
+        self.stock.save_bloodstock()
+        self.stock.blood_volume_update('10.00')
+        self.assertEqual(self.stock.blood_volume, '10.00')
+
 
 
     

@@ -45,6 +45,11 @@ class Blood_stock(models.Model):
     def save_bloodstock(self):
         self.save()
 
+    def blood_volume_update(self, blood_volume):
+        self.blood_volume = blood_volume
+        self.save_bloodstock()
+
+
 
 
 
