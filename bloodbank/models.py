@@ -21,6 +21,9 @@ class Donor(models.Model):
     def __str__(self):
         return self.email
 
+    def save_donor(self):
+        self.save()
+
 class Stock(models.Model):
     donor_name = models.ForeignKey(Donor, on_delete=models.CASCADE,null= True)
     blood_type = models.CharField(max_length=3)
