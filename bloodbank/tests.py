@@ -38,11 +38,20 @@ class DonorTestClass(TestCase):
 
     def test_donor_update(self):
         """
-        Testcase to check if donor email is updated
+        TestCase to check if donor email is updated
         """
         self.donor.save_donor()
         self.donor.email_update('user2@example.com')
         self.assertEqual(self.donor.email, 'user2@example.com')
+
+    def test_delete_donor(self):
+        """
+        TestCase to check if method deletes a donor instance
+        """
+        self.donor.save_donor()
+        self.donor.delete_donor()
+        donors = Donor.objects.all()
+        self.assertTrue(len(profiles) == 0)
 
 
 
