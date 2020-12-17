@@ -36,6 +36,15 @@ class DonorTestClass(TestCase):
         donors = Donor.objects.all()
         self.assertTrue(len(donors) > 0)
 
+    def test_donor_update(self):
+        """
+        Testcase to check if donor email is updated
+        """
+        self.donor.save_donor()
+        self.donor.email_update('user2@example.com')
+        self.assertEqual(self.donor.email, 'user2@example.com')
+
+
 
 
 
