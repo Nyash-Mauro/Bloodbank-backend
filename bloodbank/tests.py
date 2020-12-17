@@ -1,16 +1,16 @@
 from django.test import TestCase
-from .models import Donor,Stock
+from .models import Profile,Blood_stock
 
 # Create your tests here.
 
-class DonorTestClass(TestCase):
+class ProfileTestClass(TestCase):
     '''
-    Set Up method that creates instance of Donor Class
+    Set Up method that creates instance of Profile Class
     Runs before each test
     '''
     
     def setUp(self):
-        self.donor = Donor.objects.create(first_name='John',middle_name='Doe',
+        self.profile = Profile.objects.create(first_name='John',middle_name='Doe',
                                         last_name='Bond',email='user@example.com',age='50',
                                         gender='male',date_of_birth='2000-01-01',blood_group='AB+',
                                         phone_number='0721123456',location='Nairobi',weight='45',
@@ -23,35 +23,35 @@ class DonorTestClass(TestCase):
 
     def test_instance(self):
         """
-        Testing instance to see if self.donor is instance of class Donor.
+        Testing instance to see if self.profile is instance of class Profile.
         """
 
-        self.assertIsInstance(self.donor, Donor)
+        self.assertIsInstance(self.profile, Profile)
 
-    def test_save_donor(self):
+    def test_save_profile(self):
         '''
-        Testing the Save Method on Donor class
+        Testing the Save Method on Profile class
         '''
-        self.donor.save_donor()
-        donors = Donor.objects.all()
-        self.assertTrue(len(donors) > 0)
+        self.profile.save_profile()
+        profiles = Profile.objects.all()
+        self.assertTrue(len(profiles) > 0)
 
-    def test_donor_update(self):
+    def test_profile_update(self):
         """
-        TestCase to check if donor email is updated
+        TestCase to check if profile email is updated
         """
-        self.donor.save_donor()
-        self.donor.email_update('user2@example.com')
-        self.assertEqual(self.donor.email, 'user2@example.com')
+        self.profile.save_profile()
+        self.profile.email_update('user2@example.com')
+        self.assertEqual(self.profile.email, 'user2@example.com')
 
-    def test_delete_donor(self):
+    def test_delete_profile(self):
         """
-        TestCase to check if method deletes a donor instance
+        TestCase to check if method deletes a profile instance
         """
-        self.donor.save_donor()
-        self.donor.delete_donor()
-        donors = Donor.objects.all()
-        self.assertTrue(len(donors) == 0)
+        self.profile.save_profile()
+        self.profile.delete_profile()
+        profiles = Profile.objects.all()
+        self.assertTrue(len(profiles) == 0)
 
     
 

@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
-class Donor(models.Model):
+class Profile(models.Model):
     # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
@@ -21,18 +22,19 @@ class Donor(models.Model):
     def __str__(self):
         return self.email
 
-    def save_donor(self):
+    def save_profile(self):
         self.save()
 
     def email_update(self, email):
         self.email = email
-        self.save_donor()
+        self.save_profile()
 
-    def delete_donor(self):
+    def delete_profile(self):
         self.delete()
 
-class Stock(models.Model):
-    donor_name = models.ForeignKey(Donor, on_delete=models.CASCADE,null= True)
+  
+class Blood_stock(models.Model):
+    # donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
     blood_type = models.CharField(max_length=3)
     hospital_name = models.CharField(max_length=50)
     blood_volume = models.FloatField()
