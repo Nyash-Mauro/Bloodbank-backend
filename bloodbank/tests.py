@@ -53,6 +53,30 @@ class ProfileTestClass(TestCase):
         profiles = Profile.objects.all()
         self.assertTrue(len(profiles) == 0)
 
+
+class Blood_stockTestClass(TestCase):
+    '''
+    Set Up method that creates instance of Blood_stock Class
+    Runs before each test
+    '''
+    
+    def setUp(self):
+        self.stock = Blood_stock.objects.create(blood_type ='AB+',hospital_name='hospital',blood_volume='7.00')
+
+    def tearDown(self):
+        '''
+        this tearDown method runs after every test.
+        '''
+        pass
+
+    def test_instance(self):
+        """
+        Testing instance to see if self.profile is instance of class Profile.
+        """
+
+        self.assertIsInstance(self.stock, Blood_stock)
+
+
     
 
 
