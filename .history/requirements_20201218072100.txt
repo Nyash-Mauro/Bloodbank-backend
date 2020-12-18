@@ -1,4 +1,4 @@
-
+<<<<<<< HEAD
 asgiref==3.3.0
 bootstrap4==0.1.0
 certifi==2020.11.8
@@ -153,3 +153,4 @@ xkit==0.0.0
 youtube-dl==2018.3.14
 zipp==3.4.0
 zope.interface==4.3.2
+>>>>>>> origin/development

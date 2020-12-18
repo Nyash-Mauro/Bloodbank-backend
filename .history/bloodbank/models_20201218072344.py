@@ -99,6 +99,7 @@ class Role(models.Model):
   def __str__(self):
       return self.get_id_display()
 
+=======
 
 class Condition(models.Model):
     condition_name = models.Charfield(max_length=200)
@@ -167,3 +168,4 @@ class Blood_stock(models.Model):
 
     def delete_stock(self):
         self.delete()
+>>>>>>> origin/development

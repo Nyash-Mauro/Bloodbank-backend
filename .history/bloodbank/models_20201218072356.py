@@ -167,3 +167,4 @@ class Blood_stock(models.Model):
 
     def delete_stock(self):
         self.delete()
+>>>>>>> origin/development
