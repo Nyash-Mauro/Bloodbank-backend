@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 
 
-
-from __future__ import unicode_literals
+# from __future__ import unicode_literals
 from django.db import models
 import cloudinary
 from cloudinary.models import CloudinaryField
@@ -16,15 +15,6 @@ from django.utils.translation import ugettext_lazy as _
 # from .managers import UserManager
 from django.contrib.auth.base_user import BaseUserManager
 # Create your models here.
-class Admin(models.Model):
-    admin_id =models.ForeignKey(id)
-    stock_add = models.CharField(max_length=100)
-    stock_delete = models.TextField()
-    donor_search = models.DateTimeField(auto_now_add=True)
-     def save_admin(self):
-            self.save()
-    def delete_delete(self):
-        self.delete()
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -122,7 +112,7 @@ class Donations(models.Model):
     return self.blood_group
 
 class Profile(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -152,10 +142,7 @@ class Profile(models.Model):
   
 
 class BloodStock(models.Model):
-    # donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
-
-class Blood_stock(models.Model):
-
+    donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
     blood_type = models.CharField(max_length=3)
     hospital_name = models.CharField(max_length=50)
     blood_volume = models.FloatField()
