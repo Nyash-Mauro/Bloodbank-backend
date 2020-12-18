@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Profile(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -33,7 +33,7 @@ class Profile(models.Model):
         self.delete()
 
   
-class Blood_stock(models.Model):
+class BloodStock(models.Model):
     # donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
     blood_type = models.CharField(max_length=3)
     hospital_name = models.CharField(max_length=50)

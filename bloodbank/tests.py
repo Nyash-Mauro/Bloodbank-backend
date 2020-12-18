@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Profile,Blood_stock
+from .models import Profile,BloodStock
 
 # Create your tests here.
 
@@ -61,7 +61,7 @@ class Blood_stockTestClass(TestCase):
     '''
     
     def setUp(self):
-        self.stock = Blood_stock.objects.create(blood_type ='AB+',hospital_name='hospital',blood_volume='7.00')
+        self.stock = BloodStock.objects.create(blood_type ='AB+',hospital_name='hospital',blood_volume='7.00')
 
     def tearDown(self):
         '''
@@ -74,14 +74,14 @@ class Blood_stockTestClass(TestCase):
         Testing instance to see if self.stock is instance of class Blood_stock.
         """
 
-        self.assertIsInstance(self.stock, Blood_stock)
+        self.assertIsInstance(self.stock, BloodStock)
 
     def test_save_blood_stock(self):
         '''
         Testing the Save Method on Profile class
         '''
         self.stock.save_bloodstock()
-        stocks = Blood_stock.objects.all()
+        stocks = BloodStock.objects.all()
         self.assertTrue(len(stocks) > 0)
 
 
@@ -99,7 +99,7 @@ class Blood_stockTestClass(TestCase):
         """
         self.stock.save_bloodstock()
         self.stock.delete_stock()
-        stocks = Blood_stock.objects.all()
+        stocks = BloodStock.objects.all()
         self.assertTrue(len(stocks) == 0)
 
 
