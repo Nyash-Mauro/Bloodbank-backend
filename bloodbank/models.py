@@ -39,6 +39,23 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
         return self._create_user(email, password=password, **extra_fields)
+
+class Role(models.Model):
+  '''
+  The Role entries are managed by the system,
+  automatically created via a Django data migration.
+  '''
+  DONOR = 1
+  RECIPIENT = 2
+  ADMIN = 3
+  ROLE_CHOICES = (
+      (DONOR, 'donor'),
+      (RECIPIENT, 'recipient'),
+      (ADMIN, 'admin'),
+  )
+  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
+  def __str__(self):
+      return self.get_id_display()
         
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
@@ -72,44 +89,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-class Role(models.Model):
-  '''
-  The Role entries are managed by the system,
-  automatically created via a Django data migration.
-  '''
-  DONOR = 1
-  RECIPIENT = 2
-  ADMIN = 3
-  ROLE_CHOICES = (
-      (DONOR, 'donor'),
-      (RECIPIENT, 'recipient'),
-      (ADMIN, 'admin'),
-  )
-  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
-  def __str__(self):
-      return self.get_id_display()
-
 
 class Condition(models.Model):
-    condition_name = models.Charfield(max_length=200)
-    description = models.Charfield(max_length=200)
-    other_details = models.Charfield(max_length=200)
+    condition_name = models.CharField(max_length=200)
+    description = models.CharField(max_length=200)
+    other_details = models.CharField(max_length=200)
 
     def __str__(self):
       return self.condtion_name
-
-
-class Donations(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE)
-  facility = models.Charfield(max_length=200)
-  donate_date = models.DateTimeField(auto_now_add=True)
-  last_donate_date = models.DateField(auto_now_add=True)
-  location = models.Charfield(max_length=50)
-  blood_group = models.Charfield(max_length=50)
-  medical_condition = models.ForeignKey(Donors, on_delete=models.CASCADE)
-
-  def __str__(self):
-    return self.blood_group
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
@@ -139,7 +126,20 @@ class Profile(models.Model):
     def delete_profile(self):
         self.delete()
 
-  
+
+
+class Donations(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  facility = models.CharField(max_length=200)
+  donate_date = models.DateTimeField(auto_now_add=True)
+  last_donate_date = models.DateField(auto_now_add=True)
+  location = models.CharField(max_length=50)
+  blood_group = models.CharField(max_length=50)
+  medical_condition = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+  def __str__(self):
+    return self.blood_group
+
 
 class BloodStock(models.Model):
     donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
