@@ -29,6 +29,11 @@ class ProfileList(APIView):
         except User.DoesNotExist:
             raise Http404()
 
+    def get(self, request, format=None):
+        all_profile = Profile.objects.all()
+        serializers = ProfileSerializer(all_profile, many=True)
+        return Response(serializers.data)
+
 
 
 
