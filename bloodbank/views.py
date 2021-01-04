@@ -18,16 +18,16 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class ProfileList(APIView):
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
-    def get_user(self, request):
+    # def get_user(self, request):
         
-        try:
-            user_id = request.GET.get('user_id')
+    #     try:
+    #         user_id = request.GET.get('user_id')
                 
-            return User.objects.filter(id = user_id).first()
-        except User.DoesNotExist:
-            raise Http404()
+    #         return User.objects.filter(id = user_id).first()
+    #     except User.DoesNotExist:
+    #         raise Http404()
 
     def get(self, request, format=None):
         all_profile = Profile.objects.all()
