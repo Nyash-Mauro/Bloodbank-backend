@@ -65,7 +65,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField( default=False)
     is_staff = models.BooleanField( default=False)
     is_active = models.BooleanField(_('active'), default=False)
-    roles = models.OneToOneField(Role)
+    # roles = models.OneToOneField(Role)
+    # roles = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role')
+
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
