@@ -20,19 +20,46 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class ProfileList(APIView):
     # permission_classes = (IsAuthenticated,)
 
-    # def get_user(self, request):
+    def get_user(self, request):
         
-    #     try:
-    #         user_id = request.GET.get('user_id')
+        try:
+            user_id = request.GET.get('user_id')
                 
-    #         return User.objects.filter(id = user_id).first()
-    #     except User.DoesNotExist:
-    #         raise Http404()
+            return User.objects.filter(id = user_id).first()
+        except User.DoesNotExist:
+            raise Http404()
 
     def get(self, request, format=None):
         all_profile = Profile.objects.all()
         serializers = ProfileSerializer(all_profile, many=True)
         return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers = ProfileSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request):
+        if request.GET.get('user_id', None):
+            user = self.get_user(request)
+            print(user)
+            
+            if user != None:
+                
+                serializer = ProfileSerializer(user, request.data, partial=True) 
+                if serializer.is_valid():
+                    serializer.save()
+                    serial2 = UserSerializer(user)
+                    user_data = serial2.data
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail':'no user with that id'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    
 
 
 
