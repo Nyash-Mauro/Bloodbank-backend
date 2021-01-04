@@ -1,6 +1,3 @@
 {
-<<<<<<< HEAD
-=======
-    "python.pythonPath": "env/bin/python"
->>>>>>> origin/development
+    "python.pythonPath": "virtual2/bin/python"
 }
