@@ -15,16 +15,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 # from .managers import UserManager
 from django.contrib.auth.base_user import BaseUserManager
-# Create your models here.
-class Admin(models.Model):
-    admin_id =models.ForeignKey(id)
-    stock_add = models.CharField(max_length=100)
-    stock_delete = models.TextField()
-    donor_search = models.DateTimeField(auto_now_add=True)
-     def save_admin(self):
-            self.save()
-    def delete_delete(self):
-        self.delete()
+# Create your models here. 
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
