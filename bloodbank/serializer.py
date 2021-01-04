@@ -4,30 +4,79 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import viewsets
 
 
+
+
 class UserSerializer(serializers.ModelSerializer):
-    # neighbourhood = serializers.CharField(source='neighbourhood.name')
+    password = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True
+    )
+
     class Meta:
         model = User
-        fields = __All__
+        fields = ('email', 'username', 'password')
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+
+        if password is not None:
+            instance.set_password(password)
+            instance.save()
+
+        return instance
+
+    
+class RegistrationSerializer(serializers.ModelSerializer):
+    """Serializers registration requests and creates a new user."""
+
+    password = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'password', 'token']
+
     def create(self, validated_data):
-        validated_data['password'] = make_password(validated_data.get('password'))
-        return super(UserSerializer, self).create(validated_data)
-class UserRegistrationSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    first_name = serializers.CharField(required=False)
-    last_name = serializers.CharField(required=False)
-    password = serializers.CharField()
-    confirm_password = serializers.CharField()
-    def validate_email(self, email):
-        existing = User.objects.filter(email=email).first()
-        if existing:
-            raise serializers.ValidationError("Someone with that email "
-                "address has already exist.Enter another email")
-        return email
+        return User.objects.create_user(**validated_data)
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    username = serializers.CharField(max_length=255, read_only=True)
+    password = serializers.CharField(max_length=128, write_only=True)
+
     def validate(self, data):
-        if not data.get('password') or not data.get('confirm_password'):
-            raise serializers.ValidationError("Please enter a password and "
-                "confirm it.")
-        if data.get('password') != data.get('confirm_password'):
-            raise serializers.ValidationError("Passwords don't match.")
-        return data
+        email = data.get('email', None)
+        password = data.get('password', None)
+
+        if email is None:
+            raise serializers.ValidationError(
+                'Please enter email address.'
+            )
+
+        if password is None:
+            raise serializers.ValidationError(
+                'A password is required to log in.'
+            )
+        user = authenticate(username=email, password=password)
+
+        if user is None:
+            raise serializers.ValidationError(
+                'A user with this email and password was not found.'
+            )
+        if not user.is_active:
+            raise serializers.ValidationError(
+                'This user has been deactivated.'
+            )
+        return {
+            'email': user.email,
+            'username': user.username,
+
+        }
