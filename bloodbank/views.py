@@ -57,7 +57,7 @@ class ProfileList(APIView):
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request):
+    def patch(self, request,pk):
         if request.GET.get('user_id', None):
             user = self.get_user(request)
             print(user)
