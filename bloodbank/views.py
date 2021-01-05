@@ -29,6 +29,13 @@ class ProfileList(APIView):
         except User.DoesNotExist:
             raise Http404()
 
+    def get_profile(self, pk):
+        try: 
+            return Profile.objects.get(pk=pk)
+        except Profile.DoesNotExist:
+            return Http404
+
+
     def get(self, request, format=None):
         all_profile = Profile.objects.all()
         serializers = ProfileSerializer(all_profile, many=True)
@@ -41,14 +48,14 @@ class ProfileList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # def put(self, request, pk, format=None):
-    #     merch = self.get_merch(pk)
-    #     serializers = ProfileSerializer(merch, request.data)
-    #     if serializers.is_valid():
-    #         serializers.save()
-    #         return Response(serializers.data)
-    #     else:
-    #         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, pk, format=None):
+        profile = self.get_profile(pk)
+        serializers = ProfileSerializer(profile, request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request):
         if request.GET.get('user_id', None):
