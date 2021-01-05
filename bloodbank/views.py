@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-# from .permissions import IsSuperuser, IsActivatedOrReadOnly,IsAdmin
+from .permissions import IsSuperuser, IsActivatedOrReadOnly,IsAdmin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -57,23 +57,7 @@ class ProfileList(APIView):
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def patch(self, request,pk):
-        if request.GET.get('user_id', None):
-            user = self.get_user(request)
-            print(user)
-            
-            if user != None:
-                
-                serializer = ProfileSerializer(user, request.data, partial=True) 
-                if serializer.is_valid():
-                    serializer.save()
-                    serial2 = UserSerializer(user)
-                    user_data = serial2.data
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'detail':'no user with that id'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
-
+    
 class BloodStockList(APIView):
     # permission_classes = (IsSuperuser,)
 
@@ -81,6 +65,9 @@ class BloodStockList(APIView):
         all_bloodstock = BloodStock.objects.all()
         serializers = ProfileSerializer(all_bloodstock, many=True)
         return Response(serializers.data)
+
+    
+
 
 
 
