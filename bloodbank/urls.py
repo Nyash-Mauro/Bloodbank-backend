@@ -7,7 +7,9 @@ from .views import ProfileList
 
 urlpatterns = [
     path('api/v1/profile/', views.ProfileList.as_view(), name='profile_add'),
-    re_path('api/v1/profile/(?P<pk>[0-9]+)/', views.ProfileList.as_view(), name='profile_edit'),
+    path('api/v1/profile/<int:pk>/', views.ProfileList.as_view(), name='profile_edit'),
     path('api/v1/bloodstock/', views.BloodStockList.as_view(), name='bloodstock_info'),
+    path('api/v1/bloodstock/<int:pk>', views.ProfileList.as_view(), name='bloodstock_edit'),
+
 
 ]
