@@ -68,7 +68,14 @@ class ProfileList(APIView):
         return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 class BloodStockList(APIView):
-    
+    # permission_classes = (IsSuperuser,)
+
+    def get(self, request, format=None):
+        all_bloodstock = BloodStock.objects.all()
+        serializers = ProfileSerializer(all_bloodstock, many=True)
+        return Response(serializers.data)
+
+
 
 
 

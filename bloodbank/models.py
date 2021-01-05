@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
-
+from datetime import *
 
 # from __future__ import unicode_literals
 from django.db import models
@@ -53,7 +53,7 @@ class Role(models.Model):
       (RECIPIENT, 'recipient'),
       (ADMIN, 'admin'),
   )
-  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
+  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True,default= None)
   def __str__(self):
       return self.get_id_display()
         
@@ -61,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
-    date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
+    date_joined = models.DateTimeField(_('date joined'), auto_now_add=True,blank=True)
     is_admin = models.BooleanField( default=False)
     is_staff = models.BooleanField( default=False)
     is_active = models.BooleanField(_('active'), default=False)
