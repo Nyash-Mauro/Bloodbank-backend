@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from .permissions import IsSuperuser, IsActivatedOrReadOnly,IsAdmin
+from .permissions import IsActivatedOrReadOnly,IsAdmin
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -59,7 +59,7 @@ class ProfileList(APIView):
 
     
 class BloodStockList(APIView):
-    # permission_classes = (IsSuperuser,)
+    permission_classes = (IsAdmin)
 
     def get(self, request, format=None):
         all_bloodstock = BloodStock.objects.all()
