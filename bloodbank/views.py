@@ -41,6 +41,15 @@ class ProfileList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # def put(self, request, pk, format=None):
+    #     merch = self.get_merch(pk)
+    #     serializers = ProfileSerializer(merch, request.data)
+    #     if serializers.is_valid():
+    #         serializers.save()
+    #         return Response(serializers.data)
+    #     else:
+    #         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def patch(self, request):
         if request.GET.get('user_id', None):
             user = self.get_user(request)
@@ -57,6 +66,16 @@ class ProfileList(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             return Response({'detail':'no user with that id'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+class BloodStockList(APIView):
+    
+
+
+
+
+
+
+
 
 
     
