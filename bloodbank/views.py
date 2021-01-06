@@ -50,31 +50,15 @@ class ProfileList(APIView):
 
     def put(self, request, pk, format=None):
         profile = self.get_profile(pk)
-        serializers = ProfileSerializer(profile, request.data)
+        serializers = ProfileSerializer(profile, request.data,partial =  True)
+
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'detail':'no profile with that user'}, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-
-    # def put(self, request,pk,format=None):
-    #     if request.GET.get('user_id', None):
-    #         user_id = request.GET.get('user_id')
-            
-    #         user = User.objects.filter(id = user_id).first()
-    #         if user is not None:
-    #             serializers = ProfileSerializer(user, request.data)
-
-    #             if serializers.is_valid():
-    #                 serializers.save()
-    #                 return Response(serializers.data)
-    #             else:
-    #                 return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-    #         return Response({'detail':'no user with that profile'}, status=status.HTTP_400_BAD_REQUEST)
-    #     return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         profile = self.get_profile(pk)
