@@ -106,13 +106,13 @@ class Profile(models.Model):
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=255,null=True)
-    age = models.IntegerField(null=False, blank=True,default=None)
+    age = models.IntegerField(null=True, blank=False)
     gender = models.CharField(max_length=15)
     date_of_birth = models.DateField()
     blood_group = models.CharField(max_length=3)
     phone_number = models.IntegerField(unique=True)
     location = models.CharField(max_length=50)
-    weight = models.IntegerField(null=False, blank=True,default=None)
+    weight = models.IntegerField(null=True, blank=False)
     date_registered = models.DateTimeField(auto_now = True)
 
     def __str__(self):
