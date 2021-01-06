@@ -10,9 +10,9 @@ router.register('api/user', UserViewSet)
 
 
 urlpatterns = [
-    path('users/', RegistrationAPIView.as_view(),name='RegistrationAPIView'),
-    path('users/login/', LoginAPIView.as_view(),name='LoginAPIView'),
-    path('User/', UserRetrieveUpdateAPIView.as_view(),name='UserRetrieveUpdateAPIView'),
+    path('user/', RegistrationAPIView.as_view(),name='RegistrationAPIView'),
+    path('user/login/', LoginAPIView.as_view(),name='LoginAPIView'),
+    path('user/', UserRetrieveUpdateAPIView.as_view(),name='UserRetrieveUpdateAPIView'),
     path('',include(router.urls))
     
 ]

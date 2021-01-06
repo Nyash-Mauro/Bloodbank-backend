@@ -66,8 +66,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     is_admin = models.BooleanField( default=False)
     is_staff = models.BooleanField( default=False)
-    is_active = models.BooleanField(_('active'), default=False)
-    roles = models.ManyToManyField(Role)
+    is_active = models.BooleanField(_('active'), default=True)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='roles',null=True ,default=None)
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
