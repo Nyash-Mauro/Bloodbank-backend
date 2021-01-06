@@ -10,10 +10,11 @@ from .models import *
 from django.contrib.auth import login
 from knox.models import AuthToken
 from rest_framework import permissions
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework import generics, permissions
 from knox.views import LoginView as KnoxLoginView
+from django.views.decorators.debug import sensitive_post_parameters
 # class RegistrationAPIView(APIView):
 #     permission_classes = (AllowAny,)
 #     renderer_classes = (UserJSONRenderer,)
