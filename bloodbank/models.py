@@ -142,11 +142,14 @@ class Donations(models.Model):
   def __str__(self):
     return self.blood_group
 
+class Hospital(models.Model):
+    hospital_name = models.CharField(max_length=50)
+    location = models.CharField(max_length=50)
 
 class BloodStock(models.Model):
     donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
     blood_type = models.CharField(max_length=3)
-    hospital_name = models.CharField(max_length=50)
+    hospital = models.OneToOneField(Hospital, on_delete=models.CASCADE)
     blood_volume = models.FloatField()
 
     def __str__(self):
@@ -161,3 +164,15 @@ class BloodStock(models.Model):
 
     def delete_stock(self):
         self.delete()
+
+class Hospital(models.Model):
+    hospital_name = models.CharField(max_length=50)
+    location = models.CharField(max_length=50)
+
+
+
+
+
+    
+
+    

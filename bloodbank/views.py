@@ -1,4 +1,4 @@
-from .models import Profile,BloodStock
+from .models import Profile,BloodStock,User
 from .serializer import ProfileSerializer,BloodStockSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -56,6 +56,25 @@ class ProfileList(APIView):
             return Response(serializers.data)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'no user with that profile'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    # def put(self, request,pk,format=None):
+    #     if request.GET.get('user_id', None):
+    #         user_id = request.GET.get('user_id')
+            
+    #         user = User.objects.filter(id = user_id).first()
+    #         if user is not None:
+    #             serializers = ProfileSerializer(user, request.data)
+
+    #             if serializers.is_valid():
+    #                 serializers.save()
+    #                 return Response(serializers.data)
+    #             else:
+    #                 return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+    #         return Response({'detail':'no user with that profile'}, status=status.HTTP_400_BAD_REQUEST)
+    #     return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         profile = self.get_profile(pk)
