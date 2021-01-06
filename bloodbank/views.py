@@ -89,12 +89,17 @@ class BloodStockList(APIView):
 
     def put(self, request, pk, format=None):
         blood = self.get_blood(pk)
-        serializers = BLoodStockSerializer(blood, request.data)
+        serializers = BLoodStockSerializer(blood, request.data,partial =  True)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        blood = self.get_blood(pk)
+        blood.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
     
