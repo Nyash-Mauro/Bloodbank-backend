@@ -131,29 +131,33 @@ class Profile(models.Model):
 
 
 class Donations(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE)
-  facility = models.CharField(max_length=200)
-  donate_date = models.DateTimeField(auto_now_add=True)
-  last_donate_date = models.DateField(auto_now_add=True)
-  location = models.CharField(max_length=50)
-  blood_group = models.CharField(max_length=50)
-  medical_condition = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    facility = models.CharField(max_length=200)
+    donate_date = models.DateTimeField(auto_now_add=True)
+    last_donate_date = models.DateField(auto_now_add=True)
+    location = models.CharField(max_length=50)
+    blood_group = models.CharField(max_length=50)
+    medical_condition = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-  def __str__(self):
-    return self.blood_group
+    def __str__(self):
+        return self.blood_group
 
 class Hospital(models.Model):
     hospital_name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
 
-class BloodStock(models.Model):
-    donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
-    blood_type = models.CharField(max_length=3)
-    hospital = models.OneToOneField(Hospital, on_delete=models.CASCADE)
-    blood_volume = models.FloatField()
 
     def __str__(self):
         return self.hospital_name
+
+class BloodStock(models.Model):
+    hospital = models.OneToOneField(Hospital, on_delete=models.CASCADE,primary_key=True,related_name='hospital',default=None)
+    donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
+    blood_type = models.CharField(max_length=3)
+    blood_volume = models.FloatField()
+
+    def __str__(self):
+        return self.blood_type
 
     def save_bloodstock(self):
         self.save()
@@ -165,9 +169,6 @@ class BloodStock(models.Model):
     def delete_stock(self):
         self.delete()
 
-class Hospital(models.Model):
-    hospital_name = models.CharField(max_length=50)
-    location = models.CharField(max_length=50)
 
 
 

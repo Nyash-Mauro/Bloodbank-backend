@@ -56,7 +56,7 @@ class ProfileList(APIView):
             return Response(serializers.data)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'detail':'no user with that profile'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'no profile with that user'}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'detail':'no user id provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 
