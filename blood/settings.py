@@ -21,6 +21,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 LOGIN_REDIRECT_URL = '/'
 
+AUTH_USER_MODEL = "bloodbank.User"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -167,3 +169,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
+
