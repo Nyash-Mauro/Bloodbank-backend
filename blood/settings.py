@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-import django_heroku
 import dj_database_url
 from decouple import config, Csv
 
@@ -37,11 +36,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -52,13 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bloodbank',
-    'bootstrap3',
-    'tinymce',
+    'bloodbank.apps.BloodbankConfig',
     'rest_framework',
-    'rest_framework.authtoken',
-    'cloudinary',
-    
 ]
 
 MIDDLEWARE = [
@@ -97,6 +86,7 @@ WSGI_APPLICATION = 'blood.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
 if config('MODE')=="dev":
    DATABASES = {
        'default': {
@@ -121,6 +111,7 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())  
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
