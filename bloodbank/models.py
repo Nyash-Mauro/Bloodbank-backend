@@ -100,18 +100,19 @@ class Condition(models.Model):
       return self.condtion_name
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True,related_name='user')
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=255,null=True)
-    age = models.IntegerField(null=True, blank=True)
+    age = models.IntegerField(null=False, blank=True,default=None)
     gender = models.CharField(max_length=15)
     date_of_birth = models.DateField()
     blood_group = models.CharField(max_length=3)
     phone_number = models.IntegerField(unique=True)
     location = models.CharField(max_length=50)
-    weight = models.IntegerField(null=True, blank=True)
+    weight = models.IntegerField(null=False, blank=True,default=None)
     date_registered = models.DateTimeField(auto_now = True)
 
     def __str__(self):

@@ -74,7 +74,7 @@ class BloodStockList(APIView):
 
     def get(self, request, format=None):
         all_bloodstock = BloodStock.objects.all()
-        serializers = ProfileSerializer(all_bloodstock, many=True)
+        serializers = BloodStockSerializer(all_bloodstock, many=True)
         return Response(serializers.data)
 
     def post(self, request, format=None):
