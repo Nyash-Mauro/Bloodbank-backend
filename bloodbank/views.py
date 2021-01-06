@@ -1,7 +1,8 @@
 from .models import Profile,BloodStock,User,Condition,Donations
 from .serializer import ProfileSerializer,BloodStockSerializer,ConditionSerializer,DonationSerializer
 from rest_framework.response import Response
-from rest_framework.views import APIView,viewsets,generics
+# from rest_framework.views import APIView,generics
+from rest_framework import viewsets
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .permissions import IsActivatedOrReadOnly,IsAdmin
@@ -15,6 +16,7 @@ from django.utils.http import urlsafe_base64_decode
 import requests
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework_simplejwt.tokens import RefreshToken
+from . import models
 
 
 class ProfileList(APIView):
@@ -102,13 +104,10 @@ class BloodStockList(APIView):
         blood.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-  
-          
     def index(request):
-          return render(request,'home.html')
+        return render(request,'home.html')
 class ConditionSetView(viewsets.ModelViewSet):
-       queryset = models.Condition.objects.all()
+        queryset = models.Condition.objects.all()
         serializer_class = ConditionSerializer
 
 class DonationSetView(viewsets.ModelViewSet):

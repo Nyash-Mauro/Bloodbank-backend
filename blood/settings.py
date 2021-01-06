@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import django_heroku
 from decouple import config, Csv
+import django
+
 
 MODE=config("MODE", default="dev")
 SECRET_KEY = config('SECRET_KEY')
@@ -48,6 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bloodbank.apps.BloodbankConfig',
     'rest_framework',
+    'rest_framework.authtoken',
+  
+
 ]
 
 MIDDLEWARE = [

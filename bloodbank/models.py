@@ -127,8 +127,6 @@ class Profile(models.Model):
     def delete_profile(self):
         self.delete()
 
-
-
 class Donations(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     facility = models.CharField(max_length=200)
@@ -136,7 +134,7 @@ class Donations(models.Model):
     last_donate_date = models.DateField(auto_now_add=True)
     location = models.CharField(max_length=50)
     blood_group = models.CharField(max_length=50)
-    medical_condition = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    medical_condition = models.ForeignKey(Condition, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.blood_group
