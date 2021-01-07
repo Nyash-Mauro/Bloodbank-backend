@@ -23,5 +23,5 @@ urlpatterns = [
     path('api/v1/profiles/', views.ProfileList.as_view(), name='profile_add'),
     path('api/v1/profile/<int:pk>/', views.ProfileList.as_view(), name='profile_edit'),
     path('api/v1/bloodstocks/', views.BloodStockList.as_view(), name='bloodstock_info'),
-    path('api/v1/bloodstock/<int:pk>', views.ProfileList.as_view(), name='bloodstock_edit'),
+    path('api/v1/bloodstock/<int:pk>/', views.BloodStockList.as_view(), name='bloodstock_edit'),
 ]
