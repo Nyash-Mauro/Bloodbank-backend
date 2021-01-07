@@ -150,7 +150,8 @@ class Hospital(models.Model):
         return self.hospital_name
 
 class BloodStock(models.Model):
-    hospital = models.OneToOneField(Hospital, on_delete=models.CASCADE,primary_key=True,related_name='hospital',default=None)
+    # hospital = models.OneToOneField(Hospital, on_delete=models.CASCADE,primary_key=True,related_name='hospital',default=None)
+    hospital = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hospital',default=None)
     donations = models.ForeignKey(Donations, on_delete=models.CASCADE,null= True)
     blood_type = models.CharField(max_length=3)
     blood_volume = models.FloatField()
