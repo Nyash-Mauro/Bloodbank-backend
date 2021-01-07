@@ -51,12 +51,7 @@ class Migration(migrations.Migration):
                 ('other_details', models.CharField(max_length=200)),
             ],
         ),
-        migrations.CreateModel(
-
-            name='Profile',
-
-            name='Donor',
-
+        migrations.CreateModel(                   
             name='Role',
             fields=[
                 ('id', models.PositiveSmallIntegerField(choices=[(1, 'donor'), (2, 'recipient'), (3, 'admin')], default=None, primary_key=True, serialize=False)),

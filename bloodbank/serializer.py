@@ -10,7 +10,7 @@ class ConditionSerializer(serializers.ModelSerializer):
 class DonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donations
-        fields = '__all__
+        fields = '__all__'
 
 
 class ProfileSerializer(serializers.ModelSerializer):
