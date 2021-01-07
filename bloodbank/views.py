@@ -71,7 +71,7 @@ class ProfileList(APIView):
 class BloodStockList(APIView):
     # permission_classes = (IsAdmin)
 
-    def get_blood(self, pk):
+    def get_bloodstock(self, pk):
         try: 
             return BloodStock.objects.get(pk=pk)
         except BloodStock.DoesNotExist:
@@ -90,8 +90,8 @@ class BloodStockList(APIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk, format=None):
-        blood = self.get_blood(pk)
-        serializers = BLoodStockSerializer(blood, request.data,partial =  True)
+        blood = self.get_bloodstock(pk)
+        serializers = BloodStockSerializer(blood, request.data,partial =  True)
         if serializers.is_valid():
             serializers.save()
             return Response(serializers.data)
@@ -100,7 +100,7 @@ class BloodStockList(APIView):
 
 
     def delete(self, request, pk, format=None):
-        blood = self.get_blood(pk)
+        blood = self.get_bloodstock(pk)
         blood.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
