@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 
 class Condition(models.Model):
-    condition_name = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
-    other_details = models.CharField(max_length=200)
+    condition_name = models.CharField(max_length=200,null=True)
+    description = models.CharField(max_length=200,null=True)
+    other_details = models.CharField(max_length=200,null=True)
 
     def __str__(self):
       return self.condtion_name
@@ -47,7 +47,7 @@ class Donations(models.Model):
   last_donate_date = models.DateField(auto_now_add=True)
   location = models.CharField(max_length=50)
   blood_group = models.CharField(max_length=50)
-  medical_condition = models.ForeignKey(Profile, on_delete=models.CASCADE)
+  medical_condition = models.ForeignKey(Condition, on_delete=models.CASCADE,null=True)
 
   def __str__(self):
     return self.blood_group
