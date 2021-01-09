@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'cloudinary',
     'knox',
-    
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -181,9 +181,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'knox.auth.TokenAuthentication',
     ]
 }
+
+# JWT_AUTH = {
+#     'JWT_ALLOW_REFRESH': True,
+#     'JWT_EXPIRATION_DELTA': timedelta(days=2),
+# }
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())

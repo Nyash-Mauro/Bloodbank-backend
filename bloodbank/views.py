@@ -15,6 +15,10 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework import generics, permissions
 from knox.views import LoginView as KnoxLoginView
 from django.views.decorators.debug import sensitive_post_parameters
+
+# from .email.activation_email import send_activation_email
+
+
 # class RegistrationAPIView(APIView):
 #     permission_classes = (AllowAny,)
 #     renderer_classes = (UserJSONRenderer,)
@@ -76,33 +80,57 @@ from django.views.decorators.debug import sensitive_post_parameters
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response({
+    # def post(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     user = serializer.save()
+    #     return Response({
+    #     "user": UserSerializer(user, context=self.get_serializer_context()).data,
+    #     "token": AuthToken.objects.create(user)[1]
+    #     })
+
+    def post(self, request, format=None):
+        print(request.data)
+        serializers = UserSerializer(data=request.data)
+        if serializers.is_valid():
+            user = serializers.save()
+            return Response({
         "user": UserSerializer(user, context=self.get_serializer_context()).data,
         "token": AuthToken.objects.create(user)[1]
         })
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class LoginAPI(KnoxLoginView):
-    permission_classes = (permissions.AllowAny,)
+# class LoginAPI(KnoxLoginView):
+#     permission_classes = (permissions.AllowAny,)
+#     # permission_classes = (IsSuperuser,)
+#     def get(self, request, format=None):
+#         all_users = User.objects.all()
+#         serializers = UserSerializer(all_users, many=True)
+#         return Response(serializers.data)
 
+#     def post(self, request, format=None):
+#         serializer = AuthTokenSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['user']
+#         login(request, user)
+#         return super(LoginAPI, self).post(request, format=None)
+
+
+class UserViewSet(APIView):
+    def get(self, request, format=None): 
+        serializer = UserSerializer     
+        queryset = User.objects.all()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
     def post(self, request, format=None):
-        serializer = AuthTokenSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        login(request, user)
-        return super(LoginAPI, self).post(request, format=None)
-
-
-class UserAPI(generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated,]
-    serializer_class = UserSerializer
-
-    def get_object(self):
-        return self.request.user
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChangePasswordView(generics.UpdateAPIView):
