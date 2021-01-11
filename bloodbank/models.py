@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 from datetime import *
-
 # from __future__ import unicode_literals
 from django.db import models
 import cloudinary
@@ -14,7 +13,6 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 # from .managers import UserManager
 from django.contrib.auth.base_user import BaseUserManager
-# Create your models here.
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -53,7 +51,7 @@ class Role(models.Model):
       (RECIPIENT, 'recipient'),
       (ADMIN, 'admin'),
   )
-  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True,default= None)
+  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
   def __str__(self):
       return self.get_id_display()
         
@@ -64,9 +62,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True,blank=True)
     is_admin = models.BooleanField( default=False)
     is_staff = models.BooleanField( default=False)
-    is_active = models.BooleanField(_('active'), default=False)
-    roles = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role',default=None)
-
+    is_active = models.BooleanField(_('active'), default=True)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='roles',null=True ,default=None)
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -90,7 +87,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
-
 class Condition(models.Model):
     condition_name = models.CharField(max_length=200,null=True)
     description = models.CharField(max_length=200,null=True)
@@ -99,21 +95,9 @@ class Condition(models.Model):
     def __str__(self):
       return self.condition_name
       
-class Donations(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    facility = models.CharField(max_length=200)
-    donate_date = models.DateTimeField(auto_now_add=True)
-    last_donate_date = models.DateField(auto_now_add=True)
-    location = models.CharField(max_length=50)
-    blood_group = models.CharField(max_length=50)
-    medical_condition = models.ForeignKey(Condition, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.blood_group
-
 class Profile(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True,related_name='user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    # user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True,related_name='user')
     first_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -140,6 +124,7 @@ class Profile(models.Model):
     def delete_profile(self):
         self.delete()
 
+
 class Donations(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   facility = models.CharField(max_length=200)
@@ -155,8 +140,6 @@ class Donations(models.Model):
 class Hospital(models.Model):
     hospital_name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
-
-
     def __str__(self):
         return self.hospital_name
 
@@ -179,12 +162,3 @@ class BloodStock(models.Model):
 
     def delete_stock(self):
         self.delete()
-
-
-
-
-
-
-    
-
-    

@@ -1,3 +1,20 @@
+from rest_framework import status
+from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import viewsets
+from .renderer import UserJSONRenderer
+from .serializer import *
+from .models import *
+from django.contrib.auth import login
+from knox.models import AuthToken
+from rest_framework import permissions
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework import generics, permissions
+from knox.views import LoginView as KnoxLoginView
+from django.views.decorators.debug import sensitive_post_parameters
 from .models import Profile,BloodStock,User,Condition,Donations
 from .serializer import ProfileSerializer,BloodStockSerializer,ConditionSerializer,DonationSerializer
 from rest_framework.response import Response
@@ -17,6 +34,55 @@ import requests
 from django.contrib.sites.shortcuts import get_current_site
 from rest_framework_simplejwt.tokens import RefreshToken
 from . import models
+
+
+class UserViewSet(APIView):
+    def get(self, request, format=None): 
+        serializer = UserSerializer     
+        queryset = User.objects.all()
+        serializer = UserSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ChangePasswordView(generics.UpdateAPIView):
+    """
+    An endpoint for changing password.
+    """
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            if not self.object.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+
+            return Response(response)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProfileList(APIView):
     # permission_classes = (IsAuthenticated,)
@@ -112,4 +178,5 @@ class ConditionSetView(viewsets.ModelViewSet):
 class DonationSetView(viewsets.ModelViewSet):
        queryset = models.Donations.objects.all()
        serializer_class = DonationSerializer
+
 
