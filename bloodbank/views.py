@@ -15,38 +15,25 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework import generics, permissions
 from knox.views import LoginView as KnoxLoginView
 from django.views.decorators.debug import sensitive_post_parameters
-
-
-
-class RegisterAPI(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
-    def post(self, request, format=None):
-        print(request.data)
-        serializers = UserSerializer(data=request.data)
-        if serializers.is_valid():
-            user = serializers.save()
-            return Response({
-        "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        "token": AuthToken.objects.create(user)[1]
-        })
-            return Response(serializers.data, status=status.HTTP_201_CREATED)
-        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# class LoginAPI(KnoxLoginView):
-#     permission_classes = (permissions.AllowAny,)
-#     # permission_classes = (IsSuperuser,)
-#     def get(self, request, format=None):
-#         all_users = User.objects.all()
-#         serializers = UserSerializer(all_users, many=True)
-#         return Response(serializers.data)
-
-#     def post(self, request, format=None):
-#         serializer = AuthTokenSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         user = serializer.validated_data['user']
-#         login(request, user)
-#         return super(LoginAPI, self).post(request, format=None)
+from .models import Profile,BloodStock,User,Condition,Donations
+from .serializer import ProfileSerializer,BloodStockSerializer,ConditionSerializer,DonationSerializer
+from rest_framework.response import Response
+# from rest_framework.views import APIView,generics
+from rest_framework import viewsets
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from .permissions import IsActivatedOrReadOnly,IsAdmin
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from django.contrib.auth import get_user_model, login
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+import requests
+from django.contrib.sites.shortcuts import get_current_site
+from rest_framework_simplejwt.tokens import RefreshToken
+from . import models
 
 
 class UserViewSet(APIView):
@@ -62,7 +49,6 @@ class UserViewSet(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class ChangePasswordView(generics.UpdateAPIView):
     """
@@ -97,3 +83,100 @@ class ChangePasswordView(generics.UpdateAPIView):
             return Response(response)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProfileList(APIView):
+    # permission_classes = (IsAuthenticated,)
+
+    def get_user(self, request):
+        
+        try:
+            user_id = request.GET.get('user_id')
+                
+            return User.objects.filter(id = user_id).first()
+        except User.DoesNotExist:
+            raise Http404()
+
+    def get_profile(self, pk):
+        try: 
+            return Profile.objects.get(pk=pk)
+        except Profile.DoesNotExist:
+            return Http404
+
+
+    def get(self, request, format=None):
+        all_profile = Profile.objects.all()
+        serializers = ProfileSerializer(all_profile, many=True)
+        return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers = ProfileSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        profile = self.get_profile(pk)
+        serializers = ProfileSerializer(profile, request.data,partial =  True)
+
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail':'no profile with that user'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, pk, format=None):
+        profile = self.get_profile(pk)
+        profile.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    
+class BloodStockList(APIView):
+    # permission_classes = (IsAdmin)
+
+    def get_bloodstock(self, pk):
+        try: 
+            return BloodStock.objects.get(pk=pk)
+        except BloodStock.DoesNotExist:
+            return Http404
+
+    def get(self, request, format=None):
+        all_bloodstock = BloodStock.objects.all()
+        serializers = BloodStockSerializer(all_bloodstock, many=True)
+        return Response(serializers.data)
+
+    def post(self, request, format=None):
+        serializers = BloodStockSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        blood = self.get_bloodstock(pk)
+        serializers = BloodStockSerializer(blood, request.data,partial =  True)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def delete(self, request, pk, format=None):
+        blood = self.get_bloodstock(pk)
+        blood.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def index(request):
+        return render(request,'home.html')
+class ConditionSetView(viewsets.ModelViewSet):
+        queryset = models.Condition.objects.all()
+        serializer_class = ConditionSerializer
+
+class DonationSetView(viewsets.ModelViewSet):
+       queryset = models.Donations.objects.all()
+       serializer_class = DonationSerializer
+
+

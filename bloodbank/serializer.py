@@ -15,33 +15,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('first_name', 'last_name', 'email','role','is_admin','is_staff','is_active','password')
 
-    # def update(self, instance, validated_data):
-    #     password = validated_data.pop('password', None)
-
-    #     for (key, value) in validated_data.items():
-    #         setattr(instance, key, value)
-
-    #     if password is not None:
-    #         instance.set_password(password)
-    #         instance.save()
-
-    #     return instance
-
-
-
-
-class RegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('first_name', 'last_name', 'email','role','is_admin','is_staff','is_active','password')
-        extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, validated_data):
-        user = User.objects.create_user(validated_data['email'], validated_data['password'])
-
-        return user
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     model = User
 
@@ -50,3 +23,27 @@ class ChangePasswordSerializer(serializers.Serializer):
     """
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+class ConditionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Condition
+        fields = '__all__'
+
+class DonationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donations
+        fields = '__all__'
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Profile
+        fields= '__all__'
+
+
+class BloodStockSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = BloodStock
+        fields= '__all__'
+
+

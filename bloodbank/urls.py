@@ -2,6 +2,8 @@ from django.urls import path,include
 from .views import *
 from . import views
 from rest_framework.routers import DefaultRouter
+from django.conf import settings
+from django.conf.urls.static import static
 from knox import views as knox_views
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from rest_framework_simplejwt.views import (
@@ -10,17 +12,16 @@ from rest_framework_simplejwt.views import (
 )
 
 router = DefaultRouter()
-
+router.register(r"condition",ConditionSetView)
+router.register(r"donations",DonationSetView)
 urlpatterns = [
+    path('api/v1/profiles/', views.ProfileList.as_view(), name='profile_add'),
+    path('api/v1/profile/<int:pk>/', views.ProfileList.as_view(), name='profile_edit'),
+    path('api/v1/bloodstocks/', views.BloodStockList.as_view(), name='bloodstock_info'),
+    path('api/v1/bloodstock/<int:pk>/', views.BloodStockList.as_view(), name='bloodstock_edit'),
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/logout/', TokenRefreshView.as_view(), name='logout'),
     path('users/', views.UserViewSet.as_view()),
-    path('api/register/', RegisterAPI.as_view(), name='register'),
-    # path('api/user/', UserAPI.as_view(), name='user'),
-    # path('api/login/', LoginAPI.as_view(), name='login'),
-    # path('api/logout/', knox_views.LogoutView.as_view(), name='logout'),
-    # path('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
     path('api/change-password/', ChangePasswordView.as_view(), name='change-password'),
     path('',include(router.urls))
-
 ]
