@@ -51,7 +51,7 @@ class Role(models.Model):
       (RECIPIENT, 'recipient'),
       (ADMIN, 'admin'),
   )
-  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True,default= None)
+  id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
   def __str__(self):
       return self.get_id_display()
         
@@ -62,9 +62,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True,blank=True)
     is_admin = models.BooleanField( default=False)
     is_staff = models.BooleanField( default=False)
-
-    is_active = models.BooleanField(_('active'), default=False)
-    roles = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role',default=None)
+    is_active = models.BooleanField(_('active'), default=True)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='roles',null=True ,default=None)
     objects = UserManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
