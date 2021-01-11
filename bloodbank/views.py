@@ -5,6 +5,7 @@ from . import models
 from . import serializer
 from .models import Condition,Donations
 from .serializer import ConditionSerializer,DonationSerializer
+from django.contrib.auth import get_user_model, login
 
 
 def index(request):
