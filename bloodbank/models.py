@@ -88,25 +88,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 class Condition(models.Model):
-    condition_name = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
-    other_details = models.CharField(max_length=200)
+    condition_name = models.CharField(max_length=200,null=True)
+    description = models.CharField(max_length=200,null=True)
+    other_details = models.CharField(max_length=200,null=True)
 
     def __str__(self):
-      return self.condtion_name
+      return self.condition_name
       
-class Donations(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    facility = models.CharField(max_length=200)
-    donate_date = models.DateTimeField(auto_now_add=True)
-    last_donate_date = models.DateField(auto_now_add=True)
-    location = models.CharField(max_length=50)
-    blood_group = models.CharField(max_length=50)
-    medical_condition = models.ForeignKey(Condition, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.blood_group
-
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     # user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True,related_name='user')
@@ -135,6 +123,19 @@ class Profile(models.Model):
 
     def delete_profile(self):
         self.delete()
+
+
+class Donations(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  facility = models.CharField(max_length=200)
+  donate_date = models.DateTimeField(auto_now_add=True)
+  last_donate_date = models.DateField(auto_now_add=True)
+  location = models.CharField(max_length=50)
+  blood_group = models.CharField(max_length=50)
+  medical_condition = models.ForeignKey(Condition, on_delete=models.CASCADE,null=True)
+
+  def __str__(self):
+    return self.blood_group
 
 class Hospital(models.Model):
     hospital_name = models.CharField(max_length=50)

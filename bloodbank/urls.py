@@ -11,9 +11,20 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from django.conf import settings
+from django.conf.urls import include
+from django.conf.urls.static import static
+from . import views
+
+
 router = DefaultRouter()
-router.register(r"condition",ConditionSetView)
-router.register(r"donations",DonationSetView)
+router.register("condition",ConditionSetView)
+router.register("donations",DonationSetView)
+
+# urlpatterns=[
+#     path('',views.index,name='index'),
+# ] + router.urls
+
 urlpatterns = [
     path('api/v1/profiles/', views.ProfileList.as_view(), name='profile_add'),
     path('api/v1/profile/<int:pk>/', views.ProfileList.as_view(), name='profile_edit'),
@@ -23,5 +34,6 @@ urlpatterns = [
     path('api/logout/', TokenRefreshView.as_view(), name='logout'),
     path('users/', views.UserViewSet.as_view()),
     path('api/change-password/', ChangePasswordView.as_view(), name='change-password'),
-    path('',include(router.urls))
+    path('api/',include(router.urls)),
+
 ]
