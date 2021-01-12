@@ -60,10 +60,9 @@ INSTALLED_APPS = [
     'cloudinary',
     'django.contrib.sites',
     'corsheaders',
-     'tinymce',
+    'tinymce',
 
 
-  
 ]
 
 MIDDLEWARE = [
