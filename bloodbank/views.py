@@ -1,24 +1,15 @@
-from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import viewsets
 from .renderer import UserJSONRenderer
 from .serializer import *
 from .models import *
 from django.contrib.auth import login
-from knox.models import AuthToken
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework import generics, permissions
-from knox.views import LoginView as KnoxLoginView
 from django.views.decorators.debug import sensitive_post_parameters
 from .models import Profile,BloodStock,User,Condition,Donations
-from .serializer import ProfileSerializer,BloodStockSerializer,ConditionSerializer,DonationSerializer
-from rest_framework.response import Response
-# from rest_framework.views import APIView,generics
 from rest_framework import viewsets
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect

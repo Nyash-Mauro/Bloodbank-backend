@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'cloudinary',
-    'knox',
     'django.contrib.sites',
   
 
@@ -91,9 +90,9 @@ WSGI_APPLICATION = 'blood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bloodb',
-        'USER': 'moringa',
-        'PASSWORD': 'Access',
+        'NAME': 'blod',
+        'USER': 'martinmandina',
+        'PASSWORD': 'alicewambui',
     }
 }
 
@@ -155,7 +154,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'knox.auth.TokenAuthentication',
     ]
 }
 
