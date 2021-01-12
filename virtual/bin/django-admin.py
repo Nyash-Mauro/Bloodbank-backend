@@ -1,4 +1,4 @@
-#!/home/kevin/Documents/Bloodbank-backend/virtual/bin/python
+#!/home/martinmandina/Desktop/ProDev/Bloodbank-backend/virtual/bin/python3
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

@@ -8,12 +8,10 @@ from .renderer import UserJSONRenderer
 from .serializer import *
 from .models import *
 from django.contrib.auth import login
-from knox.models import AuthToken
 from rest_framework import permissions
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework import generics, permissions
-from knox.views import LoginView as KnoxLoginView
 from django.views.decorators.debug import sensitive_post_parameters
 from .models import Profile,BloodStock,User,Condition,Donations
 from .serializer import ProfileSerializer,BloodStockSerializer,ConditionSerializer,DonationSerializer
@@ -37,12 +35,11 @@ from . import models
 
 
 class UserViewSet(APIView):
-    def get(self, request, format=None): 
-        serializer = UserSerializer     
+    def get(self, request, format=None):
+        serializer = UserSerializer
         queryset = User.objects.all()
         serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
-    
     def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -84,6 +81,7 @@ class ChangePasswordView(generics.UpdateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ProfileList(APIView):
     # permission_classes = (IsAuthenticated,)
 
@@ -102,7 +100,6 @@ class ProfileList(APIView):
         except Profile.DoesNotExist:
             return Http404
 
-
     def get(self, request, format=None):
         all_profile = Profile.objects.all()
         serializers = ProfileSerializer(all_profile, many=True)
@@ -114,6 +111,19 @@ class ProfileList(APIView):
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProfileItem(APIView):
+    # permission_classes = (IsAdminOrReadOnly,)
+    def get_profile(self, pk):
+        try:
+            return Profile.objects.get(pk=pk)
+        except Profile.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format=None):
+        profile = self.get_profile(pk)
+        serializers = ProfileSerializer(profile)
+        return Response(serializers.data)
 
     def put(self, request, pk, format=None):
         profile = self.get_profile(pk)
@@ -154,6 +164,21 @@ class BloodStockList(APIView):
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    
+class BloodStockItem(APIView):
+    # permission_classes = (IsAdminOrReadOnly,)
+   
+    def get_bloodstock(self, pk):
+        try: 
+            return BloodStock.objects.get(pk=pk)
+        except BloodStock.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format=None):
+        bloodstock = self.get_bloodstock(pk)
+        serializers = BloodStockSerializer(bloodstock)
+        return Response(serializers.data)
+
     def put(self, request, pk, format=None):
         blood = self.get_bloodstock(pk)
         serializers = BloodStockSerializer(blood, request.data,partial =  True)
@@ -163,14 +188,14 @@ class BloodStockList(APIView):
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def delete(self, request, pk, format=None):
         blood = self.get_bloodstock(pk)
         blood.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def index(request):
-        return render(request,'home.html')
+    # def index(request):
+    #     return render(request,'home.html')
+
 class ConditionSetView(viewsets.ModelViewSet):
         queryset = models.Condition.objects.all()
         serializer_class = ConditionSerializer
@@ -178,5 +203,4 @@ class ConditionSetView(viewsets.ModelViewSet):
 class DonationSetView(viewsets.ModelViewSet):
        queryset = models.Donations.objects.all()
        serializer_class = DonationSerializer
-
 
