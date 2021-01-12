@@ -4,12 +4,12 @@ https://bloodbankmanagementsystem.herokuapp.com/
 ### Description:
 A Blood Banking Management System we create an application that links medical facilities with potential donors and effectively ensures that all donors are kept in the loop with current activities. 
 #### BDD As a User:
-* First Sign in with the application to start using it.
-* Receive a Email confirming signing up.
-* Be able to specify a specific neighborhood.
-* Access services offered in a selected neighborhood.
-* Create Posts the neighborhood.
-* Only view details of a single neighborhood.
+* First Sign up with to the app to start using it.
+*  Be able fill a profile form.
+* As an admin update bloodstock .
+* as a user have access to a donors form to get details.
+* Be able toview details of profile and update.
+
 
 ### Contributors/Authors:
 * Maurice Nyanja(Scrum Master)
