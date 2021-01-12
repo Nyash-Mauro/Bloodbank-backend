@@ -74,7 +74,7 @@ DISABLE_COLLECTSTATIC=1
 * martinsmandina@gmail.com
 
 #### License  & Copyright information
-Copyright (c) 2020 **Victor Maina,Sharon Olago,Jeffrey Mwai,Martin Mandina,
+Copyright (c) 2020 **Maurice Nyanja,Rowena Rono,Kevin Ligare,Virginia Wairimu,Martin Mandina
 
 [MIT License](./LICENSE)
 
