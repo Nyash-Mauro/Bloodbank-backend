@@ -61,8 +61,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'corsheaders',
     'tinymce',
-
-
+    'drf_yasg',
+    # 'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -189,6 +189,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'DEFAULT_SCHEMA_CLASS' 'drf_spectacular.openapi.AutoSchema',
     ]
 }
 
